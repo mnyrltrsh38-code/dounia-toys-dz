@@ -1,12 +1,16 @@
-
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+
 <title>دنيا الأطفال | متجر ألعاب</title>
 
 <style>
-*{box-sizing:border-box}
+
+*{
+box-sizing:border-box;
+}
 
 body{
 margin:0;
@@ -18,7 +22,7 @@ color:#222;
 header{
 background:linear-gradient(135deg,#ff6b6b,#ff9f43,#ffd32a);
 color:white;
-padding:25px 15px;
+padding:28px 15px;
 text-align:center;
 }
 
@@ -45,6 +49,11 @@ border:1px solid #ddd;
 border-radius:12px;
 font-size:16px;
 margin-bottom:20px;
+outline:none;
+}
+
+.search:focus{
+border-color:#ff9f43;
 }
 
 .products{
@@ -59,6 +68,7 @@ border-radius:16px;
 padding:15px;
 box-shadow:0 3px 12px rgba(0,0,0,.08);
 text-align:center;
+overflow:hidden;
 }
 
 .product .pic{
@@ -105,12 +115,24 @@ color:white;
 width:100%;
 }
 
-.cart-box{
+.add:hover{
+background:#219150;
+}
+
+.cart-box,
+.order-form,
+.admin-box{
 background:white;
 margin-top:25px;
 padding:20px;
 border-radius:16px;
 box-shadow:0 3px 12px rgba(0,0,0,.08);
+}
+
+.cart-box h2,
+.order-form h2,
+.admin-box h2{
+margin-top:0;
 }
 
 .cart-item{
@@ -145,16 +167,7 @@ font-weight:bold;
 margin-top:15px;
 }
 
-.order-form{
-background:white;
-margin-top:25px;
-padding:20px;
-border-radius:16px;
-box-shadow:0 3px 12px rgba(0,0,0,.08);
-}
-
 .order-form h2{
-margin-top:0;
 color:#333;
 }
 
@@ -205,6 +218,115 @@ padding:20px;
 color:#777;
 }
 
+/* الإدارة */
+
+.admin-toggle{
+background:#333;
+color:white;
+width:100%;
+margin-top:25px;
+font-weight:bold;
+}
+
+.admin-panel{
+display:none;
+}
+
+.admin-panel.show{
+display:block;
+}
+
+.admin-note{
+background:#fff8e1;
+padding:12px;
+border-radius:10px;
+margin-bottom:15px;
+line-height:1.7;
+}
+
+.admin-products{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+gap:15px;
+}
+
+.admin-card{
+border:1px solid #ddd;
+border-radius:12px;
+padding:12px;
+background:#fafafa;
+}
+
+.admin-card img,
+.admin-card .admin-image{
+width:100%;
+height:150px;
+object-fit:cover;
+border-radius:10px;
+background:#eee;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:55px;
+margin-bottom:10px;
+}
+
+.admin-card input{
+width:100%;
+padding:10px;
+margin-bottom:8px;
+border:1px solid #ccc;
+border-radius:8px;
+font-family:inherit;
+}
+
+.admin-buttons{
+display:flex;
+gap:7px;
+flex-wrap:wrap;
+}
+
+.save-btn{
+background:#27ae60;
+color:white;
+}
+
+.delete-btn{
+background:#e74c3c;
+color:white;
+}
+
+.new-btn{
+background:#3498db;
+color:white;
+width:100%;
+margin-bottom:15px;
+}
+
+.image-label{
+display:block;
+background:#8e44ad;
+color:white;
+padding:10px;
+border-radius:8px;
+text-align:center;
+cursor:pointer;
+margin-bottom:8px;
+}
+
+.image-input{
+display:none;
+}
+
+.preview{
+width:100%;
+height:150px;
+object-fit:cover;
+border-radius:10px;
+margin-bottom:8px;
+display:none;
+}
+
 footer{
 text-align:center;
 padding:25px;
@@ -213,7 +335,22 @@ background:#222;
 color:white;
 }
 
+.back-top{
+position:fixed;
+bottom:20px;
+left:20px;
+width:45px;
+height:45px;
+border-radius:50%;
+background:#ff6b6b;
+color:white;
+font-size:20px;
+display:none;
+z-index:100;
+}
+
 @media(max-width:600px){
+
 header h1{
 font-size:26px;
 }
@@ -225,18 +362,31 @@ padding:12px;
 .product .pic{
 height:170px;
 }
+
+.cart-item{
+align-items:flex-start;
 }
+
+}
+
 </style>
 </head>
 
 <body>
 
 <header>
+
 <h1>🎈 دنيا الأطفال 🎈</h1>
-<p>ألعاب ممتعة للأطفال بأسعار مناسبة 🧸🎮⚽</p>
+
+<p>
+ألعاب ممتعة للأطفال بأسعار مناسبة 🧸🎮⚽
+</p>
+
 </header>
 
+
 <div class="container">
+
 
 <input
 class="search"
@@ -246,40 +396,71 @@ placeholder="🔎 ابحث عن لعبة..."
 oninput="displayProducts()"
 >
 
+
 <div class="products" id="products"></div>
 
+
+<!-- السلة -->
+
 <div class="cart-box">
+
 <h2>🛒 سلة المشتريات</h2>
 
 <div id="cart"></div>
 
 <div class="total">
-المجموع: <span id="total">0</span> دج
+المجموع:
+<span id="total">0</span>
+دج
 </div>
 
 <button class="clear" onclick="clearCart()">
 إفراغ السلة
 </button>
+
 </div>
+
+
+<!-- معلومات الزبون -->
 
 <div class="order-form">
 
 <h2>📋 معلومات الزبون</h2>
 
 <div class="field">
+
 <label>👤 الاسم واللقب</label>
-<input id="customerName" type="text" placeholder="اكتب الاسم واللقب">
+
+<input
+id="customerName"
+type="text"
+placeholder="اكتب الاسم واللقب"
+>
+
 </div>
 
+
 <div class="field">
+
 <label>📱 رقم الهاتف</label>
-<input id="phone" type="tel" placeholder="مثال: 0550000000">
+
+<input
+id="phone"
+type="tel"
+placeholder="مثال: 0550000000"
+>
+
 </div>
 
+
 <div class="field">
+
 <label>📍 الولاية</label>
+
 <select id="wilaya">
+
 <option value="">اختر الولاية</option>
+
 <option>سطيف</option>
 <option>برج بوعريريج</option>
 <option>بجاية</option>
@@ -298,141 +479,289 @@ oninput="displayProducts()"
 <option>تبسة</option>
 <option>سكيكدة</option>
 <option>أخرى</option>
+
 </select>
+
 </div>
 
+
 <div class="field">
+
 <label>🏘️ البلدية / العنوان</label>
-<input id="address" type="text" placeholder="اكتب البلدية والعنوان">
+
+<input
+id="address"
+type="text"
+placeholder="اكتب البلدية والعنوان"
+>
+
 </div>
+
 
 <div class="field">
+
 <label>💬 ملاحظات</label>
-<textarea id="notes" placeholder="مثلاً: اتصل بي قبل التوصيل"></textarea>
+
+<textarea
+id="notes"
+placeholder="مثلاً: اتصل بي قبل التوصيل"
+></textarea>
+
 </div>
 
-<button class="whatsapp" onclick="sendOrder()">
+
+<button
+class="whatsapp"
+onclick="sendOrder()"
+>
 📲 تأكيد الطلب عبر WhatsApp
 </button>
 
 </div>
 
+
+<!-- زر الإدارة -->
+
+<button
+class="admin-toggle"
+onclick="toggleAdmin()"
+>
+⚙️ فتح لوحة إدارة المنتجات
+</button>
+
+
+<!-- لوحة الإدارة -->
+
+<div
+class="admin-panel"
+id="adminPanel"
+>
+
+<div class="admin-box">
+
+<h2>⚙️ إدارة المنتجات</h2>
+
+<div class="admin-note">
+
+📌 من هنا يمكنك تعديل المنتجات وإضافة صور من جهازك.
+
+<br>
+
+🖼️ اختر صورة من الهاتف أو الكمبيوتر ثم اضغط حفظ.
+
+<br>
+
+⚠️ التعديلات والصور تحفظ في هذا المتصفح.
+
 </div>
 
+
+<button
+class="new-btn"
+onclick="addNewProduct()"
+>
+➕ إضافة منتج جديد
+</button>
+
+
+<div
+class="admin-products"
+id="adminProducts"
+></div>
+
+</div>
+
+</div>
+
+</div>
+
+
 <footer>
-دنيا الأطفال 🧸 | شكرًا لثقتكم بنا ❤️
+
+دنيا الأطفال 🧸
+<br>
+شكرًا لثقتكم بنا ❤️
+
 </footer>
+
+
+<button
+class="back-top"
+id="backTop"
+onclick="window.scrollTo({top:0,behavior:'smooth'})"
+>
+↑
+</button>
+
 
 <script>
 
+
+/* رقم WhatsApp */
+
 const WHATSAPP = "213674456415";
 
-const products = [
+
+/* المنتجات الأصلية */
+
+const defaultProducts = [
 
 {
 id:1,
 name:"SUP Game Box",
 price:2500,
-emoji:"🎮"
+emoji:"🎮",
+image:""
 },
 
 {
 id:2,
 name:"مزلاقة أطفال",
 price:3200,
-emoji:"🛝"
+emoji:"🛝",
+image:""
 },
 
 {
 id:3,
 name:"بيبي فوت",
 price:4000,
-emoji:"⚽"
+emoji:"⚽",
+image:""
 },
 
 {
 id:4,
 name:"كيس الملاكمة",
 price:3000,
-emoji:"🥊"
+emoji:"🥊",
+image:""
 },
 
 {
 id:5,
 name:"طاكي واكي",
 price:2500,
-emoji:"🧸"
+emoji:"🧸",
+image:""
 },
 
 {
 id:6,
 name:"كيس البوكس",
 price:3000,
-emoji:"🎁"
+emoji:"🎁",
+image:""
 },
 
 {
 id:7,
 name:"مزلاقة أطفال كبيرة",
 price:4000,
-emoji:"🛝"
+emoji:"🛝",
+image:""
 },
 
 {
 id:8,
 name:"لوحة إلكترونية للأطفال",
 price:1800,
-emoji:"📱"
+emoji:"📱",
+image:""
 },
 
 {
 id:9,
 name:"نسر إلكتروني",
 price:2500,
-emoji:"🦅"
+emoji:"🦅",
+image:""
 }
 
 ];
 
+
+/* تحميل المنتجات */
+
+let products =
+JSON.parse(localStorage.getItem("dounia_products")) ||
+defaultProducts;
+
+
+/* السلة */
+
 let cart = [];
+
+
+/* عرض المنتجات */
 
 function displayProducts(){
 
 const search =
-document.getElementById("search").value.toLowerCase();
+document
+.getElementById("search")
+.value
+.toLowerCase();
 
 const box =
 document.getElementById("products");
 
 box.innerHTML="";
 
+
 products
+
 .filter(p =>
 p.name.toLowerCase().includes(search)
 )
+
 .forEach(p=>{
 
-const div=document.createElement("div");
+const div =
+document.createElement("div");
 
 div.className="product";
+
+
+let picture="";
+
+
+if(p.image){
+
+picture =
+`<img src="${p.image}" alt="${p.name}">`;
+
+}else{
+
+picture =
+p.emoji || "🧸";
+
+}
+
 
 div.innerHTML=`
 
 <div class="pic">
-${p.emoji}
+${picture}
 </div>
 
-<h3>${p.name}</h3>
+<h3>
+${p.name}
+</h3>
 
 <div class="price">
-${p.price.toLocaleString()} دج
+${Number(p.price).toLocaleString()} دج
 </div>
 
-<button class="add" onclick="addToCart(${p.id})">
+<button
+class="add"
+onclick="addToCart(${p.id})"
+>
 🛒 أضف إلى السلة
 </button>
 
 `;
+
 
 box.appendChild(div);
 
@@ -440,26 +769,44 @@ box.appendChild(div);
 
 }
 
+
+/* إضافة إلى السلة */
+
 function addToCart(id){
 
 const product =
 products.find(p=>p.id===id);
 
+if(!product) return;
+
+
 const existing =
 cart.find(p=>p.id===id);
 
+
 if(existing){
+
 existing.qty++;
+
 }else{
+
 cart.push({
+
 ...product,
+
 qty:1
+
 });
+
 }
+
 
 renderCart();
 
 }
+
+
+/* تغيير الكمية */
 
 function changeQty(id,amount){
 
@@ -468,69 +815,111 @@ cart.find(p=>p.id===id);
 
 if(!item) return;
 
+
 item.qty += amount;
 
+
 if(item.qty<=0){
-cart=cart.filter(p=>p.id!==id);
+
+cart =
+cart.filter(p=>p.id!==id);
+
 }
+
 
 renderCart();
 
 }
+
+
+/* حذف منتج من السلة */
 
 function removeItem(id){
 
-cart=cart.filter(p=>p.id!==id);
+cart =
+cart.filter(p=>p.id!==id);
 
 renderCart();
 
 }
+
+
+/* عرض السلة */
 
 function renderCart(){
 
 const box =
 document.getElementById("cart");
 
+
 if(cart.length===0){
 
-box.innerHTML=
+box.innerHTML =
 '<div class="empty">السلة فارغة 🛒</div>';
 
-document.getElementById("total").textContent="0";
+document
+.getElementById("total")
+.textContent="0";
 
 return;
 
 }
 
+
 box.innerHTML="";
 
 let total=0;
 
+
 cart.forEach(item=>{
 
-total += item.price * item.qty;
+total +=
+item.price * item.qty;
 
-const div=document.createElement("div");
+
+const div =
+document.createElement("div");
 
 div.className="cart-item";
+
 
 div.innerHTML=`
 
 <div>
-<strong>${item.name}</strong><br>
-${item.price.toLocaleString()} دج
+
+<strong>
+${item.name}
+</strong>
+
+<br>
+
+${Number(item.price).toLocaleString()} دج
+
 </div>
+
 
 <div class="qty">
 
-<button onclick="changeQty(${item.id},-1)">−</button>
+<button
+onclick="changeQty(${item.id},-1)"
+>
+−
+</button>
 
-<strong>${item.qty}</strong>
+<strong>
+${item.qty}
+</strong>
 
-<button onclick="changeQty(${item.id},1)">+</button>
+<button
+onclick="changeQty(${item.id},1)"
+>
++
+</button>
 
-<button class="remove"
-onclick="removeItem(${item.id})">
+<button
+class="remove"
+onclick="removeItem(${item.id})"
+>
 ×
 </button>
 
@@ -538,14 +927,21 @@ onclick="removeItem(${item.id})">
 
 `;
 
+
 box.appendChild(div);
 
 });
 
-document.getElementById("total").textContent =
+
+document
+.getElementById("total")
+.textContent =
 total.toLocaleString();
 
 }
+
+
+/* إفراغ السلة */
 
 function clearCart(){
 
@@ -555,72 +951,115 @@ renderCart();
 
 }
 
+
+/* إرسال الطلب */
+
 function sendOrder(){
 
 if(cart.length===0){
 
-alert("الرجاء إضافة منتج إلى السلة أولاً.");
+alert(
+"الرجاء إضافة منتج إلى السلة أولاً."
+);
 
 return;
 
 }
+
 
 const name =
-document.getElementById("customerName").value.trim();
+document
+.getElementById("customerName")
+.value
+.trim();
+
 
 const phone =
-document.getElementById("phone").value.trim();
+document
+.getElementById("phone")
+.value
+.trim();
+
 
 const wilaya =
-document.getElementById("wilaya").value;
+document
+.getElementById("wilaya")
+.value;
+
 
 const address =
-document.getElementById("address").value.trim();
+document
+.getElementById("address")
+.value
+.trim();
+
 
 const notes =
-document.getElementById("notes").value.trim();
+document
+.getElementById("notes")
+.value
+.trim();
 
-if(!name || !phone || !wilaya || !address){
 
-alert("الرجاء ملء الاسم والهاتف والولاية والعنوان.");
+if(
+!name ||
+!phone ||
+!wilaya ||
+!address
+){
+
+alert(
+"الرجاء ملء الاسم والهاتف والولاية والعنوان."
+);
 
 return;
 
 }
+
 
 let message =
 "🛒 *طلب جديد من متجر دنيا الأطفال*%0A%0A";
+
 
 message +=
 "👤 الاسم واللقب: " +
 encodeURIComponent(name) +
 "%0A";
 
+
 message +=
 "📱 الهاتف: " +
 encodeURIComponent(phone) +
 "%0A";
+
 
 message +=
 "📍 الولاية: " +
 encodeURIComponent(wilaya) +
 "%0A";
 
+
 message +=
 "🏘️ العنوان: " +
 encodeURIComponent(address) +
 "%0A%0A";
 
-message += "🧸 *المنتجات:*%0A";
+
+message +=
+"🧸 *المنتجات:*%0A";
+
 
 let total=0;
+
 
 cart.forEach(item=>{
 
 const subtotal =
 item.price * item.qty;
 
+
 total += subtotal;
+
 
 message +=
 "• " +
@@ -633,10 +1072,12 @@ subtotal.toLocaleString() +
 
 });
 
+
 message +=
 "%0A💰 *المجموع: " +
 total.toLocaleString() +
 " دج*%0A";
+
 
 if(notes){
 
@@ -647,8 +1088,10 @@ encodeURIComponent(notes) +
 
 }
 
+
 message +=
 "%0Aشكراً لكم ❤️";
+
 
 const url =
 "https://wa.me/" +
@@ -656,9 +1099,406 @@ WHATSAPP +
 "?text=" +
 message;
 
-window.open(url,"_blank");
+
+window.open(
+url,
+"_blank"
+);
 
 }
+
+
+/* فتح / غلق لوحة الإدارة */
+
+function toggleAdmin(){
+
+const panel =
+document.getElementById("adminPanel");
+
+panel.classList.toggle("show");
+
+if(panel.classList.contains("show")){
+
+renderAdmin();
+
+}
+
+}
+
+
+/* عرض لوحة الإدارة */
+
+function renderAdmin(){
+
+const box =
+document.getElementById("adminProducts");
+
+box.innerHTML="";
+
+
+products.forEach((p,index)=>{
+
+const card =
+document.createElement("div");
+
+card.className="admin-card";
+
+
+let imageHTML="";
+
+
+if(p.image){
+
+imageHTML =
+`<img
+id="preview-${p.id}"
+src="${p.image}"
+alt="${p.name}"
+>`;
+
+}else{
+
+imageHTML =
+`<div
+class="admin-image"
+id="preview-${p.id}"
+>
+${p.emoji || "🧸"}
+</div>`;
+
+}
+
+
+card.innerHTML=`
+
+${imageHTML}
+
+<label
+class="image-label"
+for="image-${p.id}"
+>
+📷 اختيار صورة
+</label>
+
+<input
+class="image-input"
+id="image-${p.id}"
+type="file"
+accept="image/*"
+onchange="loadImage(event,${p.id})"
+>
+
+
+<input
+id="name-${p.id}"
+type="text"
+value="${escapeHTML(p.name)}"
+placeholder="اسم المنتج"
+>
+
+
+<input
+id="price-${p.id}"
+type="number"
+value="${p.price}"
+placeholder="السعر بالدج"
+>
+
+
+<div class="admin-buttons">
+
+<button
+class="save-btn"
+onclick="saveProduct(${p.id})"
+>
+💾 حفظ
+</button>
+
+<button
+class="delete-btn"
+onclick="deleteProduct(${p.id})"
+>
+🗑️ حذف
+</button>
+
+</div>
+
+`;
+
+
+box.appendChild(card);
+
+});
+
+}
+
+
+/* منع مشاكل HTML */
+
+function escapeHTML(text){
+
+return String(text)
+
+.replace(/&/g,"&amp;")
+
+.replace(/</g,"&lt;")
+
+.replace(/>/g,"&gt;")
+
+.replace(/"/g,"&quot;")
+
+.replace(/'/g,"&#039;");
+
+}
+
+
+/* رفع الصورة */
+
+function loadImage(event,id){
+
+const file =
+event.target.files[0];
+
+if(!file) return;
+
+
+if(!file.type.startsWith("image/")){
+
+alert("الرجاء اختيار صورة فقط.");
+
+return;
+
+}
+
+
+const reader =
+new FileReader();
+
+
+reader.onload=function(e){
+
+const product =
+products.find(p=>p.id===id);
+
+if(!product) return;
+
+
+product.image =
+e.target.result;
+
+
+const preview =
+document.getElementById(
+"preview-"+id
+);
+
+
+if(preview){
+
+if(preview.tagName==="IMG"){
+
+preview.src =
+product.image;
+
+}else{
+
+const img =
+document.createElement("img");
+
+img.id =
+"preview-"+id;
+
+img.src =
+product.image;
+
+img.style.width="100%";
+
+img.style.height="150px";
+
+img.style.objectFit="cover";
+
+img.style.borderRadius="10px";
+
+preview.replaceWith(img);
+
+}
+
+}
+
+};
+
+
+reader.readAsDataURL(file);
+
+}
+
+
+/* حفظ المنتج */
+
+function saveProduct(id){
+
+const product =
+products.find(p=>p.id===id);
+
+if(!product) return;
+
+
+const name =
+document
+.getElementById("name-"+id)
+.value
+.trim();
+
+
+const price =
+Number(
+document
+.getElementById("price-"+id)
+.value
+);
+
+
+if(!name){
+
+alert("اكتب اسم المنتج.");
+
+return;
+
+}
+
+
+if(!price || price<=0){
+
+alert("أدخل سعرًا صحيحًا.");
+
+return;
+
+}
+
+
+product.name =
+name;
+
+product.price =
+price;
+
+
+localStorage.setItem(
+"dounia_products",
+JSON.stringify(products)
+);
+
+
+displayProducts();
+
+renderAdmin();
+
+
+alert(
+"✅ تم حفظ المنتج بنجاح."
+);
+
+}
+
+
+/* إضافة منتج */
+
+function addNewProduct(){
+
+const newId =
+Date.now();
+
+
+products.push({
+
+id:newId,
+
+name:"منتج جديد",
+
+price:1000,
+
+emoji:"🧸",
+
+image:""
+
+});
+
+
+localStorage.setItem(
+"dounia_products",
+JSON.stringify(products)
+);
+
+
+renderAdmin();
+
+displayProducts();
+
+}
+
+
+/* حذف منتج */
+
+function deleteProduct(id){
+
+const product =
+products.find(p=>p.id===id);
+
+if(!product) return;
+
+
+const ok =
+confirm(
+"هل تريد حذف المنتج: " +
+product.name +
+" ؟"
+);
+
+
+if(!ok) return;
+
+
+products =
+products.filter(p=>p.id!==id);
+
+
+localStorage.setItem(
+"dounia_products",
+JSON.stringify(products)
+);
+
+
+renderAdmin();
+
+displayProducts();
+
+}
+
+
+/* زر العودة للأعلى */
+
+window.addEventListener(
+"scroll",
+function(){
+
+const btn =
+document.getElementById("backTop");
+
+
+if(window.scrollY>300){
+
+btn.style.display="block";
+
+}else{
+
+btn.style.display="none";
+
+}
+
+});
+
+
+/* تشغيل المتجر */
 
 displayProducts();
 
@@ -667,3 +1507,4 @@ renderCart();
 </script>
 
 </body>
+</html>
