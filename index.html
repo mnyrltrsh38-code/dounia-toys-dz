@@ -1,69 +1,669 @@
-<!DOCTYPE html>
 
-<html lang="ar" dir="rtl"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width,initial-scale=1"> <title>دنيا الأطفال | متجر ألعاب</title>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>دنيا الأطفال | متجر ألعاب</title>
 
-<style> *{box-sizing:border-box} body{ margin:0; font-family:Tahoma,Arial,sans-serif; background:#f7f7fb; color:#222; } header{ background:linear-gradient(135deg,#ff4d6d,#ff8fab); color:white; padding:22px 15px; text-align:center; } header h1{margin:0 0 8px;font-size:30px} header p{margin:0;font-size:16px} .container{ max-width:1100px; margin:auto; padding:15px; } .search{ width:100%; padding:14px; border:1px solid #ddd; border-radius:12px; font-size:17px; margin-bottom:15px; } .categories{ display:flex; gap:8px; overflow-x:auto; margin-bottom:15px; } .categories button{ border:0; background:white; padding:10px 16px; border-radius:20px; cursor:pointer; box-shadow:0 2px 7px #ddd; white-space:nowrap; } .categories button.active{ background:#ff4d6d; color:white; } .products{ display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:15px; } .card{ background:white; border-radius:15px; overflow:hidden; box-shadow:0 3px 12px #ddd; position:relative; } .card img{ width:100%; height:190px; object-fit:cover; background:#eee; } .card-body{padding:12px} .card h3{margin:0 0 8px;font-size:19px} .price{ color:#e63946; font-size:20px; font-weight:bold; margin-bottom:10px; } .card button{ border:0; border-radius:9px; padding:10px; cursor:pointer; } .buy{ width:100%; background:#25d366; color:white; font-size:16px; } .edit{ position:absolute; top:8px; left:8px; background:white; width:38px; height:38px; border-radius:50%; font-size:20px; } .cart{ margin-top:25px; background:white; padding:18px; border-radius:15px; box-shadow:0 3px 12px #ddd; } .cart h2{margin-top:0} .cart-item{ display:flex; justify-content:space-between; align-items:center; gap:10px; border-bottom:1px solid #eee; padding:10px 0; } .cart-item button{ background:#ff4d6d; color:white; border:0; border-radius:7px; padding:6px 10px; } .total{ font-size:22px; font-weight:bold; margin:15px 0; } .whatsapp{ display:block; text-align:center; text-decoration:none; background:#25d366; color:white; padding:14px; border-radius:10px; font-size:18px; font-weight:bold; } .empty{ text-align:center; padding:30px; color:#777; } footer{ margin-top:30px; background:#222; color:white; text-align:center; padding:20px; } .modal{ display:none; position:fixed; z-index:1000; inset:0; background:rgba(0,0,0,.6); padding:20px; overflow:auto; } .modal-box{ background:white; max-width:500px; margin:40px auto; padding:20px; border-radius:15px; } .modal-box h2{margin-top:0} .modal-box input, .modal-box select{ width:100%; padding:12px; margin:7px 0; border:1px solid #ddd; border-radius:8px; font-size:16px; } .modal-buttons{ display:flex; gap:8px; margin-top:10px; } .modal-buttons button{ flex:1; padding:12px; border:0; border-radius:8px; cursor:pointer; } .save{background:#25d366;color:white} .close{background:#ddd} .delete{background:#e63946;color:white} .add-product{ margin:20px 0; width:100%; padding:14px; background:#ff4d6d; color:white; border:0; border-radius:10px; font-size:17px; cursor:pointer; } </style>
+<style>
+*{box-sizing:border-box}
 
+body{
+margin:0;
+font-family:Tahoma,Arial,sans-serif;
+background:#f5f7fb;
+color:#222;
+}
+
+header{
+background:linear-gradient(135deg,#ff6b6b,#ff9f43,#ffd32a);
+color:white;
+padding:25px 15px;
+text-align:center;
+}
+
+header h1{
+margin:0;
+font-size:32px;
+}
+
+header p{
+margin:8px 0 0;
+font-size:17px;
+}
+
+.container{
+max-width:1100px;
+margin:auto;
+padding:20px;
+}
+
+.search{
+width:100%;
+padding:14px;
+border:1px solid #ddd;
+border-radius:12px;
+font-size:16px;
+margin-bottom:20px;
+}
+
+.products{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:18px;
+}
+
+.product{
+background:white;
+border-radius:16px;
+padding:15px;
+box-shadow:0 3px 12px rgba(0,0,0,.08);
+text-align:center;
+}
+
+.product .pic{
+height:190px;
+border-radius:12px;
+background:#eee;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:70px;
+margin-bottom:12px;
+overflow:hidden;
+}
+
+.product img{
+width:100%;
+height:100%;
+object-fit:cover;
+}
+
+.product h3{
+margin:8px 0;
+font-size:19px;
+}
+
+.price{
+font-size:21px;
+font-weight:bold;
+color:#e74c3c;
+margin:10px 0;
+}
+
+button{
+border:0;
+border-radius:10px;
+padding:12px 18px;
+font-size:16px;
+cursor:pointer;
+}
+
+.add{
+background:#27ae60;
+color:white;
+width:100%;
+}
+
+.cart-box{
+background:white;
+margin-top:25px;
+padding:20px;
+border-radius:16px;
+box-shadow:0 3px 12px rgba(0,0,0,.08);
+}
+
+.cart-item{
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:10px;
+border-bottom:1px solid #eee;
+padding:12px 0;
+}
+
+.qty{
+display:flex;
+align-items:center;
+gap:7px;
+}
+
+.qty button{
+padding:5px 10px;
+background:#eee;
+}
+
+.remove{
+background:#e74c3c;
+color:white;
+padding:7px 10px;
+}
+
+.total{
+font-size:22px;
+font-weight:bold;
+margin-top:15px;
+}
+
+.order-form{
+background:white;
+margin-top:25px;
+padding:20px;
+border-radius:16px;
+box-shadow:0 3px 12px rgba(0,0,0,.08);
+}
+
+.order-form h2{
+margin-top:0;
+color:#333;
+}
+
+.field{
+margin-bottom:14px;
+}
+
+.field label{
+display:block;
+font-weight:bold;
+margin-bottom:6px;
+}
+
+.field input,
+.field select,
+.field textarea{
+width:100%;
+padding:13px;
+border:1px solid #ccc;
+border-radius:10px;
+font-size:16px;
+font-family:inherit;
+}
+
+.field textarea{
+height:90px;
+resize:vertical;
+}
+
+.whatsapp{
+background:#25D366;
+color:white;
+width:100%;
+font-size:19px;
+font-weight:bold;
+margin-top:10px;
+}
+
+.clear{
+background:#777;
+color:white;
+margin-top:10px;
+}
+
+.empty{
+text-align:center;
+padding:20px;
+color:#777;
+}
+
+footer{
+text-align:center;
+padding:25px;
+margin-top:30px;
+background:#222;
+color:white;
+}
+
+@media(max-width:600px){
+header h1{
+font-size:26px;
+}
+
+.container{
+padding:12px;
+}
+
+.product .pic{
+height:170px;
+}
+}
+</style>
 </head>
 
 <body>
 
-<header> <h1>🧸 دنيا الأطفال</h1> <p>أجمل الألعاب للأطفال بأسعار مناسبة</p> </header>
+<header>
+<h1>🎈 دنيا الأطفال 🎈</h1>
+<p>ألعاب ممتعة للأطفال بأسعار مناسبة 🧸🎮⚽</p>
+</header>
 
 <div class="container">
 
 <input
-id="search"
 class="search"
+id="search"
 type="text"
 placeholder="🔎 ابحث عن لعبة..."
-oninput="renderProducts()"
+oninput="displayProducts()"
+>
 
+<div class="products" id="products"></div>
 
+<div class="cart-box">
+<h2>🛒 سلة المشتريات</h2>
 
+<div id="cart"></div>
 
-<div class="categories"> <button class="active" onclick="setCategory('الكل',this)">الكل</button> <button onclick="setCategory('ألعاب',this)">ألعاب</button> <button onclick="setCategory('أطفال',this)">أطفال</button> <button onclick="setCategory('ألعاب إلكترونية',this)">إلكترونية</button> </div>
+<div class="total">
+المجموع: <span id="total">0</span> دج
+</div>
 
-<button class="add-product" onclick="openAdd()">➕ إضافة منتج جديد</button>
+<button class="clear" onclick="clearCart()">
+إفراغ السلة
+</button>
+</div>
 
-<div id="products" class="products"></div>
+<div class="order-form">
 
-<div class="cart"> <h2>🛒 سلة المشتريات</h2> <div id="cartItems"></div> <div class="total">المجموع: <span id="total">0</span> دج</div>
+<h2>📋 معلومات الزبون</h2>
 
-<a id="whatsapp" class="whatsapp" target="_blank" href="#">
-📱 إتمام الطلب عبر WhatsApp
-</a>
+<div class="field">
+<label>👤 الاسم واللقب</label>
+<input id="customerName" type="text" placeholder="اكتب الاسم واللقب">
+</div>
+
+<div class="field">
+<label>📱 رقم الهاتف</label>
+<input id="phone" type="tel" placeholder="مثال: 0550000000">
+</div>
+
+<div class="field">
+<label>📍 الولاية</label>
+<select id="wilaya">
+<option value="">اختر الولاية</option>
+<option>سطيف</option>
+<option>برج بوعريريج</option>
+<option>بجاية</option>
+<option>قسنطينة</option>
+<option>باتنة</option>
+<option>المسيلة</option>
+<option>العاصمة</option>
+<option>عنابة</option>
+<option>البليدة</option>
+<option>وهران</option>
+<option>تيزي وزو</option>
+<option>جيجل</option>
+<option>ميلة</option>
+<option>قالمة</option>
+<option>بسكرة</option>
+<option>تبسة</option>
+<option>سكيكدة</option>
+<option>أخرى</option>
+</select>
+</div>
+
+<div class="field">
+<label>🏘️ البلدية / العنوان</label>
+<input id="address" type="text" placeholder="اكتب البلدية والعنوان">
+</div>
+
+<div class="field">
+<label>💬 ملاحظات</label>
+<textarea id="notes" placeholder="مثلاً: اتصل بي قبل التوصيل"></textarea>
+</div>
+
+<button class="whatsapp" onclick="sendOrder()">
+📲 تأكيد الطلب عبر WhatsApp
+</button>
 
 </div>
 
 </div>
 
-<footer> دنيا الأطفال © 2026 <br> سعداء بخدمتكم ❤️ </footer>
+<footer>
+دنيا الأطفال 🧸 | شكرًا لثقتكم بنا ❤️
+</footer>
 
-<!-- نافذة تعديل المنتج -->
+<script>
 
-<div id="modal" class="modal"> <div class="modal-box">
+const WHATSAPP = "213674456415";
 
-<h2 id="modalTitle">تعديل المنتج</h2>
+const products = [
 
-<input id="pName" placeholder="اسم المنتج">
+{
+id:1,
+name:"SUP Game Box",
+price:2500,
+emoji:"🎮"
+},
 
-<input id="pPrice" type="number" placeholder="السعر بالدج">
+{
+id:2,
+name:"مزلاقة أطفال",
+price:3200,
+emoji:"🛝"
+},
 
-<select id="pCategory"> <option>ألعاب</option> <option>أطفال</option> <option>ألعاب إلكترونية</option> </select>
+{
+id:3,
+name:"بيبي فوت",
+price:4000,
+emoji:"⚽"
+},
 
-<label>صورة المنتج:</label>
+{
+id:4,
+name:"كيس الملاكمة",
+price:3000,
+emoji:"🥊"
+},
 
-<input id="pImage" type="file" accept="image/*">
+{
+id:5,
+name:"طاكي واكي",
+price:2500,
+emoji:"🧸"
+},
 
-<input id="pImageUrl" placeholder="أو ضع رابط الصورة">
+{
+id:6,
+name:"كيس البوكس",
+price:3000,
+emoji:"🎁"
+},
 
-<div class="modal-buttons"> <button class="save" onclick="saveProduct()">💾 حفظ</button> <button class="close" onclick="closeModal()">إلغاء</button> </div>
+{
+id:7,
+name:"مزلاقة أطفال كبيرة",
+price:4000,
+emoji:"🛝"
+},
 
-<button id="deleteBtn" class="delete" onclick="deleteProduct()" style="width:100%;margin-top:8px"> 🗑️ حذف المنتج </button>
+{
+id:8,
+name:"لوحة إلكترونية للأطفال",
+price:1800,
+emoji:"📱"
+},
 
-</div> </div>
+{
+id:9,
+name:"نسر إلكتروني",
+price:2500,
+emoji:"🦅"
+}
 
-<script> const WHATSAPP="213674456415"; let products=[ { id:1, name:"SUP Game Box", price:2500, category:"ألعاب إلكترونية", image:"https://placehold.co/600x400?text=SUP+Game+Box" }, { id:2, name:"مزلاقة أطفال", price:3200, category:"أطفال", image:"https://placehold.co/600x400?text=مزلاقة+أطفال" }, { id:3, name:"بيبي فوت", price:4000, category:"ألعاب", image:"https://placehold.co/600x400?text=بيبي+فوت" }, { id:4, name:"كيس الملاكمة", price:3000, category:"أطفال", image:"https://placehold.co/600x400?text=كيس+الملاكمة" }, { id:5, name:"لوحة إلكترونية للأطفال", price:1800, category:"ألعاب إلكترونية", image:"https://placehold.co/600x400?text=لوحة+إلكترونية" }, { id:6, name:"طائر النسر", price:2500, category:"ألعاب", image:"https://placehold.co/600x400?text=طائر+النسر" } ]; let cart=[]; let category="الكل"; let editId=null; /* حفظ المنتجات في الجهاز */ const saved=localStorage.getItem("dounia_products"); if(saved){ try{ products=JSON.parse(saved); }catch(e){} } /* اختيار التصنيف */ function setCategory(cat,btn){ category=cat; document.querySelectorAll(".categories button") .forEach(b=>b.classList.remove("active")); btn.classList.add("active"); renderProducts(); } /* عرض المنتجات */ function renderProducts(){ const box=document.getElementById("products"); const search=document .getElementById("search") .value .trim() .toLowerCase(); let list=products.filter(p=>{ const okCategory= category==="الكل" || p.category===category; const okSearch= p.name.toLowerCase().includes(search); return okCategory && okSearch; }); if(list.length===0){ box.innerHTML= '<div class="empty">لا توجد منتجات</div>'; return; } box.innerHTML=list.map(p=>` <div class="card"> <img src="${p.image}" onerror="this.src='https://placehold.co/600x400?text=صورة+المنتج'" > <button class="edit" onclick="openEdit(${p.id})" title="تعديل" >✏️</button> <div class="card-body"> <h3>${escapeHtml(p.name)}</h3> <div class="price"> ${Number(p.price).toLocaleString("ar-DZ")} دج </div> <button class="buy" onclick="addToCart(${p.id})" > 🛒 أضف إلى السلة </button> </div> </div> `).join(""); } /* حماية النص */ function escapeHtml(text){ return String(text) .replaceAll("&","&amp;") .replaceAll("<","&lt;") .replaceAll(">","&gt;") .replaceAll('"',"&quot;") .replaceAll("'","&#039;"); } /* إضافة للسلة */ function addToCart(id){ const product=products.find(p=>p.id===id); if(!product)return; cart.push(product); renderCart(); alert("تمت إضافة المنتج إلى السلة ✅"); } /* عرض السلة */ function renderCart(){ const box=document.getElementById("cartItems"); if(cart.length===0){ box.innerHTML= '<div class="empty">السلة فارغة</div>'; document.getElementById("total").textContent="0"; updateWhatsapp(); return; } let total=0; box.innerHTML=cart.map((p,index)=>{ total+=Number(p.price); return ` <div class="cart-item"> <div> <b>${escapeHtml(p.name)}</b> <br> ${Number(p.price).toLocaleString("ar-DZ")} دج </div> <button onclick="removeFromCart(${index})"> حذف </button> </div> `; }).join(""); document.getElementById("total") .textContent=total.toLocaleString("ar-DZ"); updateWhatsapp(); } /* حذف من السلة */ function removeFromCart(index){ cart.splice(index,1); renderCart(); } /* رابط WhatsApp */ function updateWhatsapp(){ if(cart.length===0){ document.getElementById("whatsapp").href= "https://wa.me/"+WHATSAPP+ "?text="+encodeURIComponent( "السلام عليكم، أريد الاستفسار عن منتجات دنيا الأطفال." ); return; } let message="السلام عليكم، أريد طلب:%0A"; cart.forEach((p,i)=>{ message+= (i+1)+". "+ p.name+ " - "+ p.price+ " دج%0A"; }); let total=cart.reduce( (sum,p)=>sum+Number(p.price),0 ); message+="%0Aالمجموع: "+total+" دج"; document.getElementById("whatsapp").href= "https://wa.me/"+WHATSAPP+ "?text="+message; } /* فتح نافذة التعديل */ function openEdit(id){ const p=products.find(x=>x.id===id); if(!p)return; editId=id; document.getElementById("modalTitle") .textContent="✏️ تعديل المنتج"; document.getElementById("pName").value=p.name; document.getElementById("pPrice").value=p.price; document.getElementById("pCategory").value=p.category; document.getElementById("pImageUrl").value= p.image.startsWith("data:") ? "" : p.image; document.getElementById("pImage").value=""; document.getElementById("deleteBtn").style.display="block"; document.getElementById("modal").style.display="block"; } /* إضافة منتج */ function openAdd(){ editId=null; document.getElementById("modalTitle") .textContent="➕ إضافة منتج"; document.getElementById("pName").value=""; document.getElementById("pPrice").value=""; document.getElementById("pCategory").value="ألعاب"; document.getElementById("pImage").value=""; document.getElementById("pImageUrl").value=""; document.getElementById("deleteBtn").style.display="none"; document.getElementById("modal").style.display="block"; } /* إغلاق النافذة */ function closeModal(){ document.getElementById("modal").style.display="none"; } /* حفظ المنتج */ function saveProduct(){ const name= document.getElementById("pName").value.trim(); const price= Number(document.getElementById("pPrice").value); const cat= document.getElementById("pCategory").value; const file= document.getElementById("pImage").files[0]; const url= document.getElementById("pImageUrl").value.trim(); if(!name){ alert("اكتب اسم المنتج"); return; } if(!price){ alert("اكتب السعر"); return; } /* إذا اختار المستخدم صورة من الهاتف */ if(file){ const reader=new FileReader(); reader.onload=function(e){ finishSave( name, price, cat, e.target.result ); }; reader.readAsDataURL(file); }else{ let image=url; if(!image && editId){ const old=products.find(p=>p.id===editId); image=old ? old.image : "https://placehold.co/600x400?text=صورة+المنتج"; } if(!image){ image= "https://placehold.co/600x400?text="+ encodeURIComponent(name); } finishSave(name,price,cat,image); } } /* تنفيذ الحفظ */ function finishSave(name,price,cat,image){ if(editId){ const p=products.find(x=>x.id===editId); if(p){ p.name=name; p.price=price; p.category=cat; p.image=image; } }else{ products.push({ id:Date.now(), name:name, price:price, category:cat, image:image }); } localStorage.setItem( "dounia_products", JSON.stringify(products) ); closeModal(); renderProducts(); } /* حذف المنتج */ function deleteProduct(){ if(!editId)return; if(!confirm("هل تريد حذف هذا المنتج؟"))return; products= products.filter(p=>p.id!==editId); localStorage.setItem( "dounia_products", JSON.stringify(products) ); closeModal(); renderProducts(); } /* إغلاق عند الضغط خارج النافذة */ document.getElementById("modal") .addEventListener("click",function(e){ if(e.target===this){ closeModal(); } }); renderProducts(); renderCart(); </script>
+];
 
-</body> </html>
+let cart = [];
+
+function displayProducts(){
+
+const search =
+document.getElementById("search").value.toLowerCase();
+
+const box =
+document.getElementById("products");
+
+box.innerHTML="";
+
+products
+.filter(p =>
+p.name.toLowerCase().includes(search)
+)
+.forEach(p=>{
+
+const div=document.createElement("div");
+
+div.className="product";
+
+div.innerHTML=`
+
+<div class="pic">
+${p.emoji}
+</div>
+
+<h3>${p.name}</h3>
+
+<div class="price">
+${p.price.toLocaleString()} دج
+</div>
+
+<button class="add" onclick="addToCart(${p.id})">
+🛒 أضف إلى السلة
+</button>
+
+`;
+
+box.appendChild(div);
+
+});
+
+}
+
+function addToCart(id){
+
+const product =
+products.find(p=>p.id===id);
+
+const existing =
+cart.find(p=>p.id===id);
+
+if(existing){
+existing.qty++;
+}else{
+cart.push({
+...product,
+qty:1
+});
+}
+
+renderCart();
+
+}
+
+function changeQty(id,amount){
+
+const item =
+cart.find(p=>p.id===id);
+
+if(!item) return;
+
+item.qty += amount;
+
+if(item.qty<=0){
+cart=cart.filter(p=>p.id!==id);
+}
+
+renderCart();
+
+}
+
+function removeItem(id){
+
+cart=cart.filter(p=>p.id!==id);
+
+renderCart();
+
+}
+
+function renderCart(){
+
+const box =
+document.getElementById("cart");
+
+if(cart.length===0){
+
+box.innerHTML=
+'<div class="empty">السلة فارغة 🛒</div>';
+
+document.getElementById("total").textContent="0";
+
+return;
+
+}
+
+box.innerHTML="";
+
+let total=0;
+
+cart.forEach(item=>{
+
+total += item.price * item.qty;
+
+const div=document.createElement("div");
+
+div.className="cart-item";
+
+div.innerHTML=`
+
+<div>
+<strong>${item.name}</strong><br>
+${item.price.toLocaleString()} دج
+</div>
+
+<div class="qty">
+
+<button onclick="changeQty(${item.id},-1)">−</button>
+
+<strong>${item.qty}</strong>
+
+<button onclick="changeQty(${item.id},1)">+</button>
+
+<button class="remove"
+onclick="removeItem(${item.id})">
+×
+</button>
+
+</div>
+
+`;
+
+box.appendChild(div);
+
+});
+
+document.getElementById("total").textContent =
+total.toLocaleString();
+
+}
+
+function clearCart(){
+
+cart=[];
+
+renderCart();
+
+}
+
+function sendOrder(){
+
+if(cart.length===0){
+
+alert("الرجاء إضافة منتج إلى السلة أولاً.");
+
+return;
+
+}
+
+const name =
+document.getElementById("customerName").value.trim();
+
+const phone =
+document.getElementById("phone").value.trim();
+
+const wilaya =
+document.getElementById("wilaya").value;
+
+const address =
+document.getElementById("address").value.trim();
+
+const notes =
+document.getElementById("notes").value.trim();
+
+if(!name || !phone || !wilaya || !address){
+
+alert("الرجاء ملء الاسم والهاتف والولاية والعنوان.");
+
+return;
+
+}
+
+let message =
+"🛒 *طلب جديد من متجر دنيا الأطفال*%0A%0A";
+
+message +=
+"👤 الاسم واللقب: " +
+encodeURIComponent(name) +
+"%0A";
+
+message +=
+"📱 الهاتف: " +
+encodeURIComponent(phone) +
+"%0A";
+
+message +=
+"📍 الولاية: " +
+encodeURIComponent(wilaya) +
+"%0A";
+
+message +=
+"🏘️ العنوان: " +
+encodeURIComponent(address) +
+"%0A%0A";
+
+message += "🧸 *المنتجات:*%0A";
+
+let total=0;
+
+cart.forEach(item=>{
+
+const subtotal =
+item.price * item.qty;
+
+total += subtotal;
+
+message +=
+"• " +
+encodeURIComponent(item.name) +
+" × " +
+item.qty +
+" = " +
+subtotal.toLocaleString() +
+" دج%0A";
+
+});
+
+message +=
+"%0A💰 *المجموع: " +
+total.toLocaleString() +
+" دج*%0A";
+
+if(notes){
+
+message +=
+"💬 ملاحظات: " +
+encodeURIComponent(notes) +
+"%0A";
+
+}
+
+message +=
+"%0Aشكراً لكم ❤️";
+
+const url =
+"https://wa.me/" +
+WHATSAPP +
+"?text=" +
+message;
+
+window.open(url,"_blank");
+
+}
+
+displayProducts();
+
+renderCart();
+
+</script>
+
+</body>
