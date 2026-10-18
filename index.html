@@ -1,5 +1,4 @@
 
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -9,88 +8,30 @@
 
 <style>
 *{box-sizing:border-box}
-body{
-  margin:0;
-  font-family:Tahoma,Arial,sans-serif;
-  background:#f5f7fb;
-  color:#222;
-}
-header{
-  background:linear-gradient(135deg,#ff6b6b,#ff9f43,#ffd32a);
-  text-align:center;
-  padding:25px 12px;
-  color:#fff;
-}
+body{margin:0;font-family:Tahoma,Arial,sans-serif;background:#f5f7fb;color:#222}
+header{background:linear-gradient(135deg,#ff6b6b,#ff9f43,#ffd32a);text-align:center;padding:25px 12px;color:white}
 header h1{margin:0 0 10px;font-size:30px}
 header p{margin:0;font-size:16px}
 main{max-width:1050px;margin:auto;padding:15px}
 h2{color:#333}
-.products{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
-  gap:14px;
-}
-.product,.cart-box,.order-box{
-  background:white;
-  border-radius:14px;
-  padding:15px;
-  box-shadow:0 3px 12px #0000000d;
-}
+.products{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px}
+.product,.cart-box,.order-box{background:white;border-radius:14px;padding:15px;box-shadow:0 3px 12px #0000000d}
 .product{text-align:center}
 .product .emoji{font-size:55px;margin:10px 0}
 .product h3{font-size:17px;min-height:42px}
 .price{color:#e85d04;font-weight:bold;margin:12px 0}
-button{
-  border:0;
-  border-radius:9px;
-  padding:11px 14px;
-  font-size:15px;
-  font-family:inherit;
-  cursor:pointer;
-}
+button{border:0;border-radius:9px;padding:11px 14px;font-size:15px;font-family:inherit;cursor:pointer}
 .add{background:#ff7043;color:white;width:100%}
 .small{background:#eee;color:#222;padding:7px 11px}
 .remove{background:#ffe1e1;color:#a00}
 .cart-box,.order-box{margin-top:22px}
-.cart-item{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  flex-wrap:wrap;
-  gap:8px;
-  padding:12px 0;
-  border-bottom:1px solid #eee;
-}
+.cart-item{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;padding:12px 0;border-bottom:1px solid #eee}
 .qty{display:flex;align-items:center;gap:9px}
-.total{
-  font-size:21px;
-  color:#d9480f;
-  font-weight:bold;
-  margin-top:18px;
-}
-.order-btn{
-  width:100%;
-  background:#159447;
-  color:#fff;
-  margin-top:15px;
-  font-size:18px;
-}
+.total{font-size:21px;color:#d9480f;font-weight:bold;margin-top:18px}
+.order-btn{width:100%;background:#159447;color:white;margin-top:15px;font-size:18px}
 .note{font-size:13px;color:#666;line-height:1.8}
-.tally-frame{
-  width:100%;
-  min-height:750px;
-  border:0;
-  display:block;
-  background:#fff;
-  border-radius:12px;
-}
-footer{
-  margin-top:30px;
-  padding:20px;
-  background:#333;
-  color:white;
-  text-align:center;
-}
+.tally-frame{width:100%;min-height:750px;border:0;display:block;background:white;border-radius:12px}
+footer{margin-top:30px;padding:20px;background:#333;color:white;text-align:center}
 </style>
 </head>
 
@@ -108,20 +49,13 @@ footer{
     <h2>🛒 سلة المشتريات</h2>
     <div id="cartItems">السلة فارغة، اختر لعبة أولاً.</div>
     <div class="total" id="cartTotal">المجموع: 0 دج</div>
-    <button class="order-btn" onclick="goToOrder()">
-      إتمام الطلبية
-    </button>
-    <p class="note">
-      أضف الألعاب التي تريدها إلى السلة، ثم اضغط إتمام الطلبية
-      لملء بياناتك وإرسال الطلب.
-    </p>
+    <button class="order-btn" onclick="goToOrder()">إتمام الطلبية</button>
+    <p class="note">أضف الألعاب إلى السلة، ثم اضغط إتمام الطلبية لإكمال بياناتك.</p>
   </section>
 
   <section class="order-box" id="orderSection">
     <h2>📋 استمارة طلبيات دنيا الأطفال</h2>
-    <p class="note">
-      راجع المنتجات والمبلغ في السلة، ثم أكمل بياناتك في الاستمارة أدناه.
-    </p>
+    <p class="note">معلومات المنتجات والمبلغ تُجهّز من السلة. أكمل بياناتك وأرسل الطلب.</p>
     <div id="orderSummary">اختر لعبة أولاً.</div>
 
     <iframe
@@ -130,26 +64,26 @@ footer{
       src="https://tally.so/embed/GevBBZ?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1"
       title="استمارة طلبيات دنيا الأطفال"
       loading="lazy"
-      allow="clipboard-write"
-    ></iframe>
+      allow="clipboard-write">
+    </iframe>
   </section>
 </main>
 
-<footer>
-  دنيا الأطفال 🧸 — شكرًا لثقتكم بنا
-</footer>
+<footer>دنيا الأطفال 🧸 — شكرًا لثقتكم بنا</footer>
 
 <script>
+const TALLY_URL = "https://tally.so/embed/GevBBZ";
+
 const products = [
-  {id:1, name:"SUP Game Box", price:2500, emoji:"🎮"},
-  {id:2, name:"مزلاقة أطفال", price:3200, emoji:"🛝"},
-  {id:3, name:"بيبي فوت", price:4000, emoji:"⚽"},
-  {id:4, name:"كيس الملاكمة", price:3000, emoji:"🥊"},
-  {id:5, name:"لعبة الطائرة", price:2500, emoji:"✈️"},
-  {id:6, name:"كيس البوكس", price:3000, emoji:"🥊"},
-  {id:7, name:"لعبة ممتعة للأطفال", price:4000, emoji:"🧸"},
-  {id:8, name:"لوحة إلكترونية للأطفال", price:1800, emoji:"🎨"},
-  {id:9, name:"لعبة النسر", price:2500, emoji:"🦅"}
+  {id:1,name:"SUP Game Box",price:2500,emoji:"🎮"},
+  {id:2,name:"مزلاقة أطفال",price:3200,emoji:"🛝"},
+  {id:3,name:"بيبي فوت",price:4000,emoji:"⚽"},
+  {id:4,name:"كيس الملاكمة",price:3000,emoji:"🥊"},
+  {id:5,name:"لعبة الطائرة",price:2500,emoji:"✈️"},
+  {id:6,name:"كيس البوكس",price:3000,emoji:"🥊"},
+  {id:7,name:"لعبة ممتعة للأطفال",price:4000,emoji:"🧸"},
+  {id:8,name:"لوحة إلكترونية للأطفال",price:1800,emoji:"🎨"},
+  {id:9,name:"لعبة النسر",price:2500,emoji:"🦅"}
 ];
 
 let cart = [];
@@ -171,9 +105,11 @@ function renderProducts(){
       <div class="price">${money(product.price)}</div>
       <button class="add">أضف إلى السلة</button>
     `;
+
     card.querySelector("button").addEventListener("click", () => {
       addToCart(product.id);
     });
+
     box.appendChild(card);
   });
 }
@@ -182,22 +118,19 @@ function addToCart(id){
   const product = products.find(p => p.id === id);
   const found = cart.find(item => item.id === id);
 
-  if(found){
-    found.qty++;
-  }else{
-    cart.push({...product, qty:1});
-  }
+  if(found) found.qty++;
+  else cart.push({...product,qty:1});
+
   renderCart();
 }
 
-function changeQty(id, amount){
+function changeQty(id,amount){
   const item = cart.find(p => p.id === id);
   if(!item) return;
 
   item.qty += amount;
-  if(item.qty <= 0){
-    cart = cart.filter(p => p.id !== id);
-  }
+  if(item.qty <= 0) cart = cart.filter(p => p.id !== id);
+
   renderCart();
 }
 
@@ -207,7 +140,7 @@ function removeItem(id){
 }
 
 function getTotal(){
-  return cart.reduce((sum,item) => sum + item.price * item.qty, 0);
+  return cart.reduce((sum,item) => sum + item.price * item.qty,0);
 }
 
 function renderCart(){
@@ -258,18 +191,16 @@ function renderCart(){
     "المجموع: " + money(getTotal());
 
   renderOrderSummary();
-  updateTallyForm();
 }
 
 function renderOrderSummary(){
   const box = document.getElementById("orderSummary");
+  box.innerHTML = "";
 
   if(cart.length === 0){
     box.textContent = "السلة فارغة، اختر لعبة أولاً.";
     return;
   }
-
-  box.innerHTML = "";
 
   cart.forEach(item => {
     const line = document.createElement("p");
@@ -286,7 +217,6 @@ function renderOrderSummary(){
 
 function updateTallyForm(){
   const frame = document.getElementById("tallyFrame");
-  if(!frame) return;
 
   const productText = cart
     .map(item => item.name)
@@ -296,18 +226,19 @@ function updateTallyForm(){
     .map(item => item.name + ": " + item.qty)
     .join("، ");
 
-  const totalAmount = getTotal();
-
   const params = new URLSearchParams();
-  params.set("product", productText);
-  params.set("quantity", quantityText);
-  params.set("total", String(totalAmount));
 
-  const settings =
-    "alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1";
+  params.set("alignLeft","1");
+  params.set("hideTitle","1");
+  params.set("transparentBackground","1");
+  params.set("dynamicHeight","1");
 
-  frame.src = "https://tally.so/embed/GevBBZ?" +
-    settings + "&" + params.toString();
+  // يجب أن تطابق الأسماء حقول Hidden fields في Tally
+  params.set("product",productText);
+  params.set("quantity",quantityText);
+  params.set("total",String(getTotal()));
+
+  frame.src = TALLY_URL + "?" + params.toString();
 }
 
 function goToOrder(){
@@ -317,6 +248,7 @@ function goToOrder(){
   }
 
   updateTallyForm();
+
   document.getElementById("orderSection").scrollIntoView({
     behavior:"smooth",
     block:"start"
@@ -328,3 +260,5 @@ renderCart();
 </script>
 </body>
 </html>
+
+
