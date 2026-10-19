@@ -11,37 +11,64 @@
 body{margin:0;font-family:Tahoma,Arial,sans-serif;background:#f5f7fb;color:#222}
 header{background:linear-gradient(135deg,#ff6b6b,#ff9f43,#ffd32a);text-align:center;padding:25px 12px;color:white}
 header h1{margin:0 0 10px;font-size:30px}
-header p{margin:0;font-size:16px}
-main{max-width:1050px;margin:auto;padding:15px}
-h2{color:#333}
-.products{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px}
-.product,.cart-box,.order-box{background:white;border-radius:14px;padding:15px;box-shadow:0 3px 12px #0000000d}
+main{max-width:1100px;margin:auto;padding:15px}
+.products{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
+.product,.cart-box,.order-box,.admin-box{background:white;border-radius:14px;padding:16px;box-shadow:0 3px 12px #0000000d}
 .product{text-align:center}
-.product .emoji{font-size:55px;margin:10px 0}
-.product h3{font-size:17px;min-height:42px}
-.price{color:#e85d04;font-weight:bold;margin:12px 0}
-button{border:0;border-radius:9px;padding:11px 14px;font-size:15px;font-family:inherit;cursor:pointer}
+.product img{width:100%;height:210px;object-fit:contain;border-radius:10px}
+.emoji{font-size:100px;height:210px;display:flex;align-items:center;justify-content:center}
+.product h3{font-size:18px;min-height:42px}
+.price{color:#e85d04;font-weight:bold;margin:12px 0;font-size:18px}
+button,input{font-family:inherit;font-size:15px}
+button{border:0;border-radius:9px;padding:11px 14px;cursor:pointer}
 .add{background:#ff7043;color:white;width:100%}
 .small{background:#eee;color:#222;padding:7px 11px}
 .remove{background:#ffe1e1;color:#a00}
-.cart-box,.order-box{margin-top:22px}
+.order-btn{width:100%;background:#159447;color:white;margin-top:15px;font-size:18px}
+.cart-box,.order-box,.admin-box{margin-top:22px}
 .cart-item{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;padding:12px 0;border-bottom:1px solid #eee}
 .qty{display:flex;align-items:center;gap:9px}
 .total{font-size:21px;color:#d9480f;font-weight:bold;margin-top:18px}
-.order-btn{width:100%;background:#159447;color:white;margin-top:15px;font-size:18px}
 .note{font-size:13px;color:#666;line-height:1.8}
 .tally-frame{width:100%;min-height:750px;border:0;display:block;background:white;border-radius:12px}
+.admin-box{display:none;border:2px solid #ff9f43}
+.admin-box input{width:100%;padding:10px;margin:5px 0 12px;border:1px solid #ccc;border-radius:8px}
+.admin-btn{background:#333;color:white;margin-top:10px}
+.save-btn{background:#168447;color:white}
 footer{margin-top:30px;padding:20px;background:#333;color:white;text-align:center}
 </style>
 </head>
-
 <body>
+
 <header>
   <h1>🧸 دنيا الأطفال</h1>
   <p>ألعاب ممتعة لأطفالكم — اطلب لعبتك بسهولة</p>
+  <button class="admin-btn" onclick="openAdmin()">⚙️ إدارة المتجر</button>
 </header>
 
 <main>
+  <section id="adminPanel" class="admin-box">
+    <h2>⚙️ لوحة التحكم</h2>
+    <p class="note">أضف منتجًا أو عدّل الاسم والسعر ورابط الصورة.</p>
+
+    <label>اسم المنتج</label>
+    <input id="editName" placeholder="اسم المنتج">
+
+    <label>السعر بالدينار</label>
+    <input id="editPrice" type="number" min="0" placeholder="2500">
+
+    <label>رابط صورة المنتج (اختياري)</label>
+    <input id="editImage" placeholder="https://example.com/image.jpg">
+
+    <label>رمز تعبيري بديل للصورة</label>
+    <input id="editEmoji" placeholder="🧸">
+
+    <button class="save-btn" onclick="saveProduct()">حفظ / إضافة المنتج</button>
+    <button class="small" onclick="clearEditor()">منتج جديد</button>
+    <div id="adminProducts"></div>
+    <button class="admin-btn" onclick="closeAdmin()">إغلاق لوحة التحكم</button>
+  </section>
+
   <h2>🛍️ ألعابنا</h2>
   <div class="products" id="products"></div>
 
@@ -50,12 +77,11 @@ footer{margin-top:30px;padding:20px;background:#333;color:white;text-align:cente
     <div id="cartItems">السلة فارغة، اختر لعبة أولاً.</div>
     <div class="total" id="cartTotal">المجموع: 0 دج</div>
     <button class="order-btn" onclick="goToOrder()">إتمام الطلبية</button>
-    <p class="note">أضف الألعاب إلى السلة، ثم اضغط إتمام الطلبية لإكمال بياناتك.</p>
+    <p class="note">أضف الألعاب إلى السلة ثم أكمل بياناتك.</p>
   </section>
 
   <section class="order-box" id="orderSection">
     <h2>📋 استمارة طلبيات دنيا الأطفال</h2>
-    <p class="note">معلومات المنتجات والمبلغ تُجهّز من السلة. أكمل بياناتك وأرسل الطلب.</p>
     <div id="orderSummary">اختر لعبة أولاً.</div>
 
     <iframe
@@ -73,186 +99,317 @@ footer{margin-top:30px;padding:20px;background:#333;color:white;text-align:cente
 
 <script>
 const TALLY_URL = "https://tally.so/embed/GevBBZ";
+const STORAGE_KEY = "dounia_products_v2";
 
-const products = [
-  {id:1,name:"SUP Game Box",price:2500,emoji:"🎮"},
-  {id:2,name:"مزلاقة أطفال",price:3200,emoji:"🛝"},
-  {id:3,name:"بيبي فوت",price:4000,emoji:"⚽"},
-  {id:4,name:"كيس الملاكمة",price:3000,emoji:"🥊"},
-  {id:5,name:"لعبة الطائرة",price:2500,emoji:"✈️"},
-  {id:6,name:"كيس البوكس",price:3000,emoji:"🥊"},
-  {id:7,name:"لعبة ممتعة للأطفال",price:4000,emoji:"🧸"},
-  {id:8,name:"لوحة إلكترونية للأطفال",price:1800,emoji:"🎨"},
-  {id:9,name:"لعبة النسر",price:2500,emoji:"🦅"}
+const defaultProducts = [
+ {id:1,name:"SUP Game Box",price:2500,emoji:"🎮",image:""},
+ {id:2,name:"مزلاقة أطفال",price:3200,emoji:"🛝",image:""},
+ {id:3,name:"بيبي فوت",price:4000,emoji:"⚽",image:""},
+ {id:4,name:"كيس الملاكمة",price:3000,emoji:"🥊",image:""},
+ {id:5,name:"لعبة الطائرة",price:2500,emoji:"✈️",image:""},
+ {id:6,name:"كيس البوكس",price:3000,emoji:"🥊",image:""},
+ {id:7,name:"لعبة ممتعة للأطفال",price:4000,emoji:"🧸",image:""},
+ {id:8,name:"لوحة إلكترونية للأطفال",price:1800,emoji:"🎨",image:""},
+ {id:9,name:"لعبة النسر",price:2500,emoji:"🦅",image:""}
 ];
 
+let products;
+try {
+ const saved = localStorage.getItem(STORAGE_KEY);
+ products = saved ? JSON.parse(saved) : defaultProducts;
+ if(!Array.isArray(products)) products = defaultProducts;
+} catch(e) {
+ products = defaultProducts;
+}
+
 let cart = [];
+let editingId = null;
 
 function money(value){
-  return Number(value).toLocaleString("fr-FR") + " دج";
+ return Number(value).toLocaleString("fr-FR") + " دج";
+}
+
+function saveProducts(){
+ try {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(products));
+ } catch(e) {
+  alert("تعذر حفظ التغييرات في هذا المتصفح.");
+ }
 }
 
 function renderProducts(){
-  const box = document.getElementById("products");
-  box.innerHTML = "";
+ const box = document.getElementById("products");
+ box.innerHTML = "";
 
-  products.forEach(product => {
-    const card = document.createElement("article");
-    card.className = "product";
-    card.innerHTML = `
-      <div class="emoji">${product.emoji}</div>
-      <h3>${product.name}</h3>
-      <div class="price">${money(product.price)}</div>
-      <button class="add">أضف إلى السلة</button>
-    `;
+ products.forEach(product => {
+  const card = document.createElement("article");
+  card.className = "product";
 
-    card.querySelector("button").addEventListener("click", () => {
-      addToCart(product.id);
-    });
+  const media = document.createElement("div");
+  if(product.image){
+   const img = document.createElement("img");
+   img.src = product.image;
+   img.alt = product.name;
+   img.onerror = () => {
+    media.innerHTML = "";
+    const fallback = document.createElement("div");
+    fallback.className = "emoji";
+    fallback.textContent = product.emoji || "🧸";
+    media.appendChild(fallback);
+   };
+   media.appendChild(img);
+  } else {
+   const emoji = document.createElement("div");
+   emoji.className = "emoji";
+   emoji.textContent = product.emoji || "🧸";
+   media.appendChild(emoji);
+  }
 
-    box.appendChild(card);
-  });
+  const name = document.createElement("h3");
+  name.textContent = product.name;
+
+  const price = document.createElement("div");
+  price.className = "price";
+  price.textContent = money(product.price);
+
+  const btn = document.createElement("button");
+  btn.className = "add";
+  btn.textContent = "أضف إلى السلة";
+  btn.onclick = () => addToCart(product.id);
+
+  card.append(media,name,price,btn);
+  box.appendChild(card);
+ });
 }
 
 function addToCart(id){
-  const product = products.find(p => p.id === id);
-  const found = cart.find(item => item.id === id);
-
-  if(found) found.qty++;
-  else cart.push({...product,qty:1});
-
-  renderCart();
+ const product = products.find(p => p.id === id);
+ if(!product) return;
+ const found = cart.find(p => p.id === id);
+ if(found) found.qty++;
+ else cart.push({...product,qty:1});
+ renderCart();
 }
 
 function changeQty(id,amount){
-  const item = cart.find(p => p.id === id);
-  if(!item) return;
-
-  item.qty += amount;
-  if(item.qty <= 0) cart = cart.filter(p => p.id !== id);
-
-  renderCart();
+ const item = cart.find(p => p.id === id);
+ if(!item) return;
+ item.qty += amount;
+ if(item.qty <= 0) cart = cart.filter(p => p.id !== id);
+ renderCart();
 }
 
 function removeItem(id){
-  cart = cart.filter(p => p.id !== id);
-  renderCart();
+ cart = cart.filter(p => p.id !== id);
+ renderCart();
 }
 
 function getTotal(){
-  return cart.reduce((sum,item) => sum + item.price * item.qty,0);
+ return cart.reduce((sum,item) => sum + item.price * item.qty,0);
 }
 
 function renderCart(){
-  const box = document.getElementById("cartItems");
-  box.innerHTML = "";
+ const box = document.getElementById("cartItems");
+ box.innerHTML = "";
 
-  if(cart.length === 0){
-    box.textContent = "السلة فارغة، اختر لعبة أولاً.";
-  }else{
-    cart.forEach(item => {
-      const row = document.createElement("div");
-      row.className = "cart-item";
+ if(cart.length === 0){
+  box.textContent = "السلة فارغة، اختر لعبة أولاً.";
+ } else {
+  cart.forEach(item => {
+   const row = document.createElement("div");
+   row.className = "cart-item";
 
-      const name = document.createElement("span");
-      name.textContent = item.emoji + " " + item.name;
+   const name = document.createElement("span");
+   name.textContent = item.name;
 
-      const qty = document.createElement("div");
-      qty.className = "qty";
+   const qty = document.createElement("div");
+   qty.className = "qty";
 
-      const minus = document.createElement("button");
-      minus.className = "small";
-      minus.textContent = "−";
-      minus.onclick = () => changeQty(item.id,-1);
+   const minus = document.createElement("button");
+   minus.className = "small";
+   minus.textContent = "−";
+   minus.onclick = () => changeQty(item.id,-1);
 
-      const number = document.createElement("span");
-      number.textContent = item.qty;
+   const number = document.createElement("span");
+   number.textContent = item.qty;
 
-      const plus = document.createElement("button");
-      plus.className = "small";
-      plus.textContent = "+";
-      plus.onclick = () => changeQty(item.id,1);
+   const plus = document.createElement("button");
+   plus.className = "small";
+   plus.textContent = "+";
+   plus.onclick = () => changeQty(item.id,1);
 
-      const subtotal = document.createElement("strong");
-      subtotal.textContent = money(item.price * item.qty);
+   const subtotal = document.createElement("strong");
+   subtotal.textContent = money(item.price * item.qty);
 
-      const remove = document.createElement("button");
-      remove.className = "remove";
-      remove.textContent = "حذف";
-      remove.onclick = () => removeItem(item.id);
+   const remove = document.createElement("button");
+   remove.className = "remove";
+   remove.textContent = "حذف";
+   remove.onclick = () => removeItem(item.id);
 
-      qty.append(minus,number,plus);
-      row.append(name,qty,subtotal,remove);
-      box.appendChild(row);
-    });
-  }
+   qty.append(minus,number,plus);
+   row.append(name,qty,subtotal,remove);
+   box.appendChild(row);
+  });
+ }
 
-  document.getElementById("cartTotal").textContent =
-    "المجموع: " + money(getTotal());
+ document.getElementById("cartTotal").textContent =
+  "المجموع: " + money(getTotal());
 
-  renderOrderSummary();
+ renderOrderSummary();
 }
 
 function renderOrderSummary(){
-  const box = document.getElementById("orderSummary");
-  box.innerHTML = "";
+ const box = document.getElementById("orderSummary");
+ box.innerHTML = "";
 
-  if(cart.length === 0){
-    box.textContent = "السلة فارغة، اختر لعبة أولاً.";
-    return;
-  }
+ if(cart.length === 0){
+  box.textContent = "السلة فارغة، اختر لعبة أولاً.";
+  return;
+ }
 
-  cart.forEach(item => {
-    const line = document.createElement("p");
-    line.textContent =
-      item.name + " × " + item.qty + " = " +
-      money(item.price * item.qty);
-    box.appendChild(line);
-  });
+ cart.forEach(item => {
+  const line = document.createElement("p");
+  line.textContent = item.name + " × " + item.qty +
+   " = " + money(item.price * item.qty);
+  box.appendChild(line);
+ });
 
-  const total = document.createElement("strong");
-  total.textContent = "المبلغ الإجمالي: " + money(getTotal());
-  box.appendChild(total);
+ const total = document.createElement("strong");
+ total.textContent = "المبلغ الإجمالي: " + money(getTotal());
+ box.appendChild(total);
 }
 
 function updateTallyForm(){
-  const frame = document.getElementById("tallyFrame");
+ const frame = document.getElementById("tallyFrame");
+ const params = new URLSearchParams();
 
-  const productText = cart
-    .map(item => item.name)
-    .join("، ");
+ params.set("alignLeft","1");
+ params.set("hideTitle","1");
+ params.set("transparentBackground","1");
+ params.set("dynamicHeight","1");
 
-  const quantityText = cart
-    .map(item => item.name + ": " + item.qty)
-    .join("، ");
+ // يجب أن تطابق هذه الأسماء Hidden fields في Tally تمامًا
+ params.set("product_name",cart.map(item =>
+  item.name + " × " + item.qty).join("، "));
+ params.set("quantity",cart.map(item =>
+  item.name + ": " + item.qty).join("، "));
+ params.set("total_amount",String(getTotal()));
 
-  const params = new URLSearchParams();
-
-  params.set("alignLeft","1");
-  params.set("hideTitle","1");
-  params.set("transparentBackground","1");
-  params.set("dynamicHeight","1");
-
-  // يجب أن تطابق الأسماء حقول Hidden fields في Tally
-  params.set("product",productText);
-  params.set("quantity",quantityText);
-  params.set("total",String(getTotal()));
-
-  frame.src = TALLY_URL + "?" + params.toString();
+ frame.src = TALLY_URL + "?" + params.toString();
 }
 
 function goToOrder(){
-  if(cart.length === 0){
-    alert("أضف لعبة واحدة على الأقل إلى السلة أولاً.");
-    return;
-  }
+ if(cart.length === 0){
+  alert("أضف لعبة واحدة على الأقل إلى السلة أولاً.");
+  return;
+ }
+ updateTallyForm();
+ document.getElementById("orderSection").scrollIntoView({
+  behavior:"smooth",block:"start"
+ });
+}
 
-  updateTallyForm();
+function openAdmin(){
+ const password = prompt("أدخل كلمة مرور إدارة المتجر:");
+ if(password === null) return;
+ if(password !== "1234"){
+  alert("كلمة المرور غير صحيحة.");
+  return;
+ }
+ document.getElementById("adminPanel").style.display = "block";
+ renderAdminProducts();
+ document.getElementById("adminPanel").scrollIntoView({behavior:"smooth"});
+}
 
-  document.getElementById("orderSection").scrollIntoView({
-    behavior:"smooth",
-    block:"start"
-  });
+function closeAdmin(){
+ document.getElementById("adminPanel").style.display = "none";
+ clearEditor();
+}
+
+function clearEditor(){
+ editingId = null;
+ document.getElementById("editName").value = "";
+ document.getElementById("editPrice").value = "";
+ document.getElementById("editImage").value = "";
+ document.getElementById("editEmoji").value = "";
+}
+
+function saveProduct(){
+ const name = document.getElementById("editName").value.trim();
+ const price = Number(document.getElementById("editPrice").value);
+ const image = document.getElementById("editImage").value.trim();
+ const emoji = document.getElementById("editEmoji").value.trim() || "🧸";
+
+ if(!name || !Number.isFinite(price) || price < 0){
+  alert("أدخل اسم المنتج وسعرًا صحيحًا.");
+  return;
+ }
+
+ if(image && !/^https?:\/\//i.test(image)){
+  alert("رابط الصورة يجب أن يبدأ بـ https:// أو http://");
+  return;
+ }
+
+ if(editingId !== null){
+  const product = products.find(p => p.id === editingId);
+  if(product) Object.assign(product,{name,price,image,emoji});
+ } else {
+  const id = Math.max(0,...products.map(p => Number(p.id)||0)) + 1;
+  products.push({id,name,price,image,emoji});
+ }
+
+ saveProducts();
+ renderProducts();
+ renderAdminProducts();
+ clearEditor();
+ alert("تم حفظ المنتج في هذا المتصفح.");
+}
+
+function editProduct(id){
+ const p = products.find(item => item.id === id);
+ if(!p) return;
+ editingId = id;
+ document.getElementById("editName").value = p.name;
+ document.getElementById("editPrice").value = p.price;
+ document.getElementById("editImage").value = p.image || "";
+ document.getElementById("editEmoji").value = p.emoji || "🧸";
+ document.getElementById("editName").scrollIntoView({behavior:"smooth"});
+}
+
+function deleteProduct(id){
+ if(!confirm("هل تريد حذف هذا المنتج؟")) return;
+ products = products.filter(p => p.id !== id);
+ cart = cart.filter(p => p.id !== id);
+ saveProducts();
+ renderProducts();
+ renderCart();
+ renderAdminProducts();
+}
+
+function renderAdminProducts(){
+ const box = document.getElementById("adminProducts");
+ box.innerHTML = "<h3>المنتجات الحالية</h3>";
+
+ products.forEach(p => {
+  const row = document.createElement("div");
+  row.className = "cart-item";
+
+  const info = document.createElement("span");
+  info.textContent = p.name + " — " + money(p.price);
+
+  const edit = document.createElement("button");
+  edit.className = "small";
+  edit.textContent = "تعديل";
+  edit.onclick = () => editProduct(p.id);
+
+  const del = document.createElement("button");
+  del.className = "remove";
+  del.textContent = "حذف";
+  del.onclick = () => deleteProduct(p.id);
+
+  row.append(info,edit,del);
+  box.appendChild(row);
+ });
 }
 
 renderProducts();
@@ -260,5 +417,4 @@ renderCart();
 </script>
 </body>
 </html>
-
 
