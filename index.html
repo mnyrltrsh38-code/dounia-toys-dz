@@ -227,20 +227,6 @@
 
       <!-- Admin Dashboard Area -->
       <div id="adminArea" class="space-y-6 hidden">
-        <!-- Info Banner for Image URLs -->
-        <div class="bg-slate-800/80 border border-slate-700 p-4 rounded-xl text-xs leading-relaxed space-y-2">
-          <div class="flex items-center gap-2 text-brand-yellow font-bold text-sm">
-            <i class="fa-solid fa-globe"></i>
-            <span>كيف تجعل الصور تظهر لكل الزبائن؟</span>
-          </div>
-          <p class="text-slate-300">
-            لضمان ظهور الصور لدى الزبائن على أجهزهتم المختلفة، استخدم **روابط صور أونلاين مباشرة (Image URL)** تبدأ بـ <code class="text-brand-yellow">https://</code>.
-          </p>
-          <div class="text-slate-400">
-            💡 **طريقة سهلة:** ارفع صورتك على موقع مجاني مثل <a href="https://postimages.org/" target="_blank" class="text-brand-blue underline">Postimages</a> أو <a href="https://imgur.com/" target="_blank" class="text-brand-blue underline">Imgur</a> ثم انسخ **الرابط المباشر (Direct Link)** وضع الرابط في الخانة المخصصة له.
-          </div>
-        </div>
-
         <div class="flex flex-wrap gap-3 justify-between items-center">
           <button
             onclick="addNewProduct()"
@@ -280,9 +266,9 @@
   <script>
     const ADMIN_PASSWORD = "1234";
 
-    // High quality default online images (Unsplash direct links for kids toys)
+    // Default online images with corrected URL
     const defaultProducts = [
-      { id: 1, name: "SUP Game Box", price: 2500, emoji: "🎮", image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600&auto=format&fit=crop&q=80" },
+      { id: 1, name: "SUP Game Box", price: 2500, emoji: "🎮", image: "https://res.cloudinary.com/tptjpbwc/image/upload/1792661915833.jpg" },
       { id: 2, name: "مزلاقة أطفال", price: 3200, emoji: "🛝", image: "https://images.unsplash.com/photo-1587654780291-39c9404d746b?w=600&auto=format&fit=crop&q=80" },
       { id: 3, name: "طاولة بيبي فوت", price: 3000, emoji: "⚽", image: "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=600&auto=format&fit=crop&q=80" },
       { id: 4, name: "كيس الملاكمة للأطفال", price: 3000, emoji: "🥊", image: "https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?w=600&auto=format&fit=crop&q=80" },
@@ -316,7 +302,7 @@
     }
 
     function resetDefaultProducts() {
-      if (confirm("هل تريد استعادة قائمة المنتجات الافتراضية للجميع معك روابط الصور؟")) {
+      if (confirm("هل تريد استعادة قائمة المنتجات الافتراضية للجميع مع روابط الصور؟")) {
         products = [...defaultProducts];
         saveProducts();
         displayProducts();
@@ -381,7 +367,7 @@
         box.innerHTML = `
           <div class="col-span-full text-center py-12 bg-white rounded-2xl border border-slate-100">
             <div class="text-4xl mb-2">🔍</div>
-            <p class="text-slate-500 font-bold text-sm">لم يتم العثور على ألعاب مطابقة للبحت.</p>
+            <p class="text-slate-500 font-bold text-sm">لم يتم العثور على ألعاب مطابقة للبحث.</p>
           </div>
         `;
         return;
@@ -679,7 +665,7 @@
       const product = products.find(p => Number(p.id) === Number(id));
       if (!product) return;
 
-      if (!confirm(`هل أنت تأكد من إزالة المنتج: "${product.name}"؟`)) return;
+      if (!confirm(`هل أنت متأكد من إزالة المنتج: "${product.name}"؟`)) return;
 
       products = products.filter(p => Number(p.id) !== Number(id));
 
