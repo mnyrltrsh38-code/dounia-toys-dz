@@ -307,11 +307,11 @@ const TALLY_URL = "https://tally.so/embed/GevBBZ";
 
 /* قائمة المنتجات الأصلية */
 const defaultProducts = [
- {id:1,name:"SUP Game Box",price:2500,emoji:"🎮",image:""},
+ {id:1,name:"SUP Game Box",price:2500,emoji:"🎮",image:"https://res.cloudinary.com/tptjpbwc/image/upload/v1792662222/supgam.jpg"},
  {id:2,name:"مزلاقة أطفال",price:3200,emoji:"🛝",image:""},
  {id:3,name:"طاولة بيبي فوت",price:3000,emoji:"⚽",image:""},
  {id:4,name:"كيس الملاكمة للأطفال",price:3000,emoji:"🥊",image:""},
- {id:5,name:"جهاز طاكي واكي",price:2500,emoji:"📻",image:""},
+ {id:5,name:"جهاز طاكي واكي",price:2500,emoji:"📻",image:"https://res.cloudinary.com/tptjpbwc/image/upload/v1793881329/Taaki_Waki.jpg.png"},
  {id:6,name:"لوحة إلكترونية للرسم",price:1800,emoji:"🎨",image:""},
  {id:7,name:"طائرة نسر إلكتروني",price:2500,emoji:"🦅",image:""}
 ];
@@ -326,7 +326,18 @@ function loadProducts(){
   const saved=localStorage.getItem("dounia_products_v4");
   if(saved){
    const data=JSON.parse(saved);
-   if(Array.isArray(data)) return data;
+   if(Array.isArray(data)){
+    // إكمال روابط الصور الأصلية الناقصة مع الاحتفاظ بتعديلات الإدارة
+    return data.map(p=>{
+     const original=defaultProducts.find(d=>Number(d.id)===Number(p.id));
+     return {
+      ...p,
+      image:(p.image && String(p.image).trim())
+       ? p.image
+       : (original ? original.image : "")
+     };
+    });
+   }
   }
  }catch(e){}
  return JSON.parse(JSON.stringify(defaultProducts));
