@@ -251,8 +251,8 @@ footer{
  <p>راجع المنتجات ثم أكمل معلوماتك في الاستمارة.</p>
  <div id="orderSummary"></div>
  <iframe id="tallyFrame"
-  title="استمارة طلبيات دنيا الأطفال"
-  loading="lazy"></iframe>
+ title="استمارة طلبيات دنيا الأطفال"
+ loading="lazy"></iframe>
 </section>
 
 <section class="panel admin" style="margin-top:30px">
@@ -305,13 +305,13 @@ footer{
 const ADMIN_PASSWORD = "1234";
 const TALLY_URL = "https://tally.so/embed/GevBBZ";
 
-/* قائمة المنتجات الأصلية */
+/* قائمة المنتجات الأصلية مع تصحيح روابط الصور وتجنب الامتدادات المزدوجة */
 const defaultProducts = [
  {id:1,name:"SUP Game Box",price:2500,emoji:"🎮",image:"https://res.cloudinary.com/tptjpbwc/image/upload/v1792662222/supgam.jpg"},
  {id:2,name:"مزلاقة أطفال",price:3200,emoji:"🛝",image:""},
  {id:3,name:"طاولة بيبي فوت",price:3000,emoji:"⚽",image:""},
  {id:4,name:"كيس الملاكمة للأطفال",price:3000,emoji:"🥊",image:""},
- {id:5,name:"جهاز طاكي واكي",price:2500,emoji:"📻",image:"https://res.cloudinary.com/tptjpbwc/image/upload/v1793881329/Taaki_Waki.jpg.png"},
+ {id:5,name:"جهاز طاكي واكي",price:2500,emoji:"📻",image:"https://res.cloudinary.com/tptjpbwc/image/upload/v1793881329/Taaki_Waki.jpg"},
  {id:6,name:"لوحة إلكترونية للرسم",price:1800,emoji:"🎨",image:""},
  {id:7,name:"طائرة نسر إلكتروني",price:2500,emoji:"🦅",image:""}
 ];
@@ -323,18 +323,20 @@ document.getElementById("year").textContent = new Date().getFullYear();
 
 function loadProducts(){
  try{
-  const saved=localStorage.getItem("dounia_products_v4");
+  const saved=localStorage.getItem("dounia_products_v5");
   if(saved){
    const data=JSON.parse(saved);
    if(Array.isArray(data)){
-    // إكمال روابط الصور الأصلية الناقصة مع الاحتفاظ بتعديلات الإدارة
     return data.map(p=>{
      const original=defaultProducts.find(d=>Number(d.id)===Number(p.id));
+     let img = (p.image && String(p.image).trim()) ? p.image : (original ? original.image : "");
+     // تصحيح تلقائي لأي رابط يحتوي على امتداد مزدوج سابقاً
+     if(img.includes("Taaki_Waki.jpg.png")) {
+       img = "https://res.cloudinary.com/tptjpbwc/image/upload/v1793881329/Taaki_Waki.jpg";
+     }
      return {
       ...p,
-      image:(p.image && String(p.image).trim())
-       ? p.image
-       : (original ? original.image : "")
+      image: img
      };
     });
    }
@@ -345,7 +347,7 @@ function loadProducts(){
 
 function saveProducts(){
  try{
-  localStorage.setItem("dounia_products_v4",JSON.stringify(products));
+  localStorage.setItem("dounia_products_v5",JSON.stringify(products));
   return true;
  }catch(e){
   notify("تعذر حفظ البيانات على هذا الجهاز");
